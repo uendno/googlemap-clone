@@ -1,0 +1,56 @@
+PODS:
+  - Alamofire (3.4.0)
+  - AlamofireImage (2.4.0):
+    - Alamofire (~> 3.3)
+  - AlamofireNetworkActivityIndicator (1.0.1):
+    - Alamofire (~> 3.3)
+  - AlamofireObjectMapper (3.0.0):
+    - Alamofire (~> 3.2)
+    - ObjectMapper (~> 1.0)
+  - Bolts (1.7.0):
+    - Bolts/AppLinks (= 1.7.0)
+    - Bolts/Tasks (= 1.7.0)
+  - Bolts/AppLinks (1.7.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.7.0)
+  - Cosmos (1.2.3)
+  - FBLikeLayout (1.2)
+  - FXBlurView (1.6.4)
+  - GoogleMaps (1.13.2)
+  - KeychainAccess (2.3.5)
+  - Kingfisher (2.4.1)
+  - ObjectMapper (1.3.0)
+  - TNImageSliderViewController (1.0.4)
+
+DEPENDENCIES:
+  - Alamofire (~> 3.4)
+  - AlamofireImage
+  - AlamofireNetworkActivityIndicator
+  - AlamofireObjectMapper
+  - Bolts
+  - Cosmos
+  - FBLikeLayout
+  - FXBlurView
+  - GoogleMaps
+  - KeychainAccess
+  - Kingfisher
+  - TNImageSliderViewController
+
+SPEC CHECKSUMS:
+  Alamofire: c19a627cefd6a95f840401c49ab1f124e07f54ee
+  AlamofireImage: 87408b652e0f5ae5fe364035f15aea8b9b24c77e
+  AlamofireNetworkActivityIndicator: 49a6e39afb947136f7b1872bae2d684957c26697
+  AlamofireObjectMapper: 2d16585d06177be0116d76de73497e77437798af
+  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  Cosmos: efddd01b729956ad6335bc58bc92e5735a1d12a3
+  FBLikeLayout: 687de95c7f29623dc4f7591c9746b99756952607
+  FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
+  GoogleMaps: b20a103ff307f58392e603cf142e59d7e30374c1
+  KeychainAccess: e283c1981a6c5655e1984cd411c6faf16fa165ae
+  Kingfisher: 41aed5b6c1ed8fa98cf6d75283ce89cf7890f517
+  ObjectMapper: 4eb08a726e9791a93b2632049951b56a7c17e471
+  TNImageSliderViewController: 2517ca7b658e2cfd35f12e02c3cacac7056e0010
+
+PODFILE CHECKSUM: ca8eb5c30e0595603feb4d5f97796dd1aab01c86
+
+COCOAPODS: 1.0.0
