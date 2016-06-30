@@ -72,7 +72,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 	private var selectedPlace: GMSPlace?
 	private var photos: [UIImage]? = []
 	private var reviews: [PlaceReviewResponse]? = []
-    private var nearbyPlaces: [NearbyPlaceResponse]? = []
+	private var nearbyPlaces: [NearbyPlaceResponse]? = []
 	private var infos: [String: String]? = [:]
 	
 	var imageSliderVC: TNImageSliderViewController!
@@ -115,8 +115,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 				self.btnNavigate.enabled = true
 				
 			}
-            
-            			
+			
 		})
 		
 		//
@@ -167,10 +166,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 			imageSliderVC = segue.destinationViewController as! TNImageSliderViewController
 			
 		} else if (segue.identifier == "showPhotos") {
-            (segue.destinationViewController as! PhotosViewController).photos = imageSliderVC.images
-            
+			(segue.destinationViewController as! PhotosViewController).photos = imageSliderVC.images
 			(segue.destinationViewController as! PhotosViewController).collectionView?.reloadData()
-            
+			
 		}
 		
 	}
@@ -420,22 +418,24 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 				self.navigationItem.titleView = searchController?.searchBar
 				screenStatus = ViewController.ON_MAP
 			}
-            
-            if floatingLabelBottomContraint.constant < -(self.view.frame.height - image.frame.height - floatingLabel.frame.height) {
-                self.navigationItem.titleView = nil
-                self.navigationItem.title = selectedPlace?.name
-               
-            }
+			
+			if floatingLabelBottomContraint.constant < -(self.view.frame.height - image.frame.height - floatingLabel.frame.height) {
+				self.navigationItem.titleView = nil
+				self.navigationItem.title = selectedPlace?.name
+				
+			}
 			
 			if floatingLabelBottomContraint.constant < -(self.view.frame.height - floatingLabel.frame.height) {
 				
 				screenStatus = ViewController.ON_FULLSCREEN_INFO
 			}
-            
-            
 			
-			floatingLabelBottomContraint.constant = floatingLabelBottomContraint.constant - scrollView.contentOffset.y
-			imageBottomContraint.constant = -(self.view.frame.height - image.frame.height)
+			let isInBound = floatingLabelBottomContraint.constant - scrollView.contentOffset.y >= -(self.view.frame.height - floatingLabel.frame.height)
+			if isInBound {
+				floatingLabelBottomContraint.constant = floatingLabelBottomContraint.constant - scrollView.contentOffset.y
+				imageBottomContraint.constant = -(self.view.frame.height - image.frame.height)
+				
+			}
 			
 			if scrollView.contentOffset.y != 0 {
 				lastOffset = scrollView.contentOffset.y
@@ -564,8 +564,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 			} else {
 				return 0
 			}
-        case 4:
-            return 1
+		case 4:
+			return 1
 		default:
 			return 0
 		}
@@ -580,15 +580,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 				return nil
 			}
 			
-        } else if section == 4 {
-            
-            if self.nearbyPlaces?.count > 0 {
-                return "Nearby Places"
-            } else {
-                return nil
-            }
-            
-        } else {
+		} else if section == 4 {
+			
+			if self.nearbyPlaces?.count > 0 {
+				return "Nearby Places"
+			} else {
+				return nil
+			}
+			
+		} else {
 			return nil
 		}
 	}
@@ -639,7 +639,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 			break
 			
 		case 3:
-            
 			
 			cell = tableView.dequeueReusableCellWithIdentifier("ReviewCell", forIndexPath: indexPath)
 			let review = self.reviews![indexPath.row]
@@ -653,9 +652,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 			(cell as! ReviewCell).descriptionLabel.text = "                     \(review.text!)"
 			(cell as! ReviewCell).rateView.rating = Double(review.rating)
 			
-			
 			if let avatarURL = review.avatarURL {
-								(cell as! ReviewCell).avatar.kf_setImageWithURL(NSURL(string: "http:\(avatarURL)")!, placeholderImage: UIImage.init(named: "avatar"))
+				(cell as! ReviewCell).avatar.kf_setImageWithURL(NSURL(string: "http:\(avatarURL)")!, placeholderImage: UIImage.init(named: "avatar"))
 			} else {
 				(cell as! ReviewCell).avatar.image = UIImage.init(named: "avatar")
 			}
@@ -663,18 +661,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 			(cell as! ReviewCell).avatar.clipsToBounds = true;
 			
 			break
-            
-        case 4:
-            cell = tableView.dequeueReusableCellWithIdentifier("NearByPlacesCell", forIndexPath: indexPath)
-            
-            (cell as! NearByPlacesCell).nearbyPlaces = self.nearbyPlaces
-            
-            (cell as! NearByPlacesCell).collectionView.reloadData()
-            
-            
-            print("NUMBER OF NEARBY PLACES:\(self.nearbyPlaces?.count)")
-            
-            break
+			
+		case 4:
+			cell = tableView.dequeueReusableCellWithIdentifier("NearByPlacesCell", forIndexPath: indexPath)
+			(cell as! NearByPlacesCell).nearbyPlaces = self.nearbyPlaces
+			(cell as! NearByPlacesCell).collectionView.reloadData()
+			
+			print("NUMBER OF NEARBY PLACES:\(self.nearbyPlaces?.count)")
+			
+			break
 		default:
 			cell = UITableViewCell.init(style: .Default, reuseIdentifier: "")
 		}
@@ -689,7 +684,7 @@ extension ViewController: GMSAutocompleteResultsViewControllerDelegate {
 	func resultsController(resultsController: GMSAutocompleteResultsViewController,
 		didAutocompleteWithPlace place: GMSPlace) {
 			searchController?.active = false
-        
+			
 			// Do something with the selected place.
 			self.selectedPlace = place
 			
@@ -706,23 +701,23 @@ extension ViewController: GMSAutocompleteResultsViewControllerDelegate {
 			self.mapView.animateToLocation(CLLocationCoordinate2D(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude))
 			
 			// get reviews and nearby places
-        
-            self.reviews = []
-            self.nearbyPlaces = []
-        
+			
+			self.reviews = []
+			self.nearbyPlaces = []
+			
 			let client = APIClient(baseURLString: "http://128.199.151.182:3000/places/")
 			client.getPlaceDetails(place.placeID, completionHandler: { (response, error) in
 				self.reviews = response?.reviews
 				self.nearbyPlaces = response?.nearbyPlaces
-                
+				
 				if self.reviews != nil {
 					self.numOfReviewsLabel.text = "\(self.reviews!.count) reviews"
 				} else {
 					self.numOfReviewsLabel.text = "No reviews"
 				}
-                
+				
 				self.tableView.reloadData()
-                
+				
 			})
 			
 			// load photos
