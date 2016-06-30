@@ -34,13 +34,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		
 	}
 	
-	@IBAction func showMyLocation(sender: AnyObject) {
+	@IBAction func navigate(sender: AnyObject) {
 		
-		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-		self.navigationController?.navigationBar.shadowImage = UIImage()
-		self.navigationController?.navigationBar.translucent = true
-		self.navigationController?.view.backgroundColor = UIColor.clearColor()
-		self.navigationController?.navigationBar.backgroundColor = UIColor.clearColor()
+		let client = APIClient(baseURLString: "http://128.199.151.182:3000/")
+		client.getDirection((myPlace?.placeID)!, destinationId: (selectedPlace?.placeID)!, completionHandler: { (response, error) in
+			
+			if let route = response?.routes?.first {
+				self.polylineDrawer!.draw(route, map: self.mapView)
+				
+			} else {
+				print("No route")
+			}
+		})
+		
+	}
+	@IBAction func showMyLocation(sender: AnyObject) {
 		
 		btnNavigate.enabled = false
 		
@@ -54,7 +62,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 			
 			if let placeLikelihoods = placeLikelihoods {
 				let place = placeLikelihoods.likelihoods[0].place
-				self.selectedPlace = place
+				self.myPlace = place
 				
 				self.mapView.animateToLocation(CLLocationCoordinate2D(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude))
 				
@@ -65,15 +73,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		})
 	}
 	
+	private var myPlace: GMSPlace?
+	private var selectedPlace: GMSPlace?
 	private var resultsViewController: GMSAutocompleteResultsViewController?
 	private var searchController: UISearchController?
 	private var resultView: UITextView?
 	private var placeClient: GMSPlacesClient!
-	private var selectedPlace: GMSPlace?
 	private var photos: [UIImage]? = []
 	private var reviews: [PlaceReviewResponse]? = []
 	private var nearbyPlaces: [NearbyPlaceResponse]? = []
 	private var infos: [String: String]? = [:]
+	private var marker: GMSMarker?
+	private var polylineDrawer: PolylineDrawer? = PolylineDrawer()
 	
 	var imageSliderVC: TNImageSliderViewController!
 	
@@ -98,25 +109,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 		self.mapView.settings.compassButton = true
 		placeClient = GMSPlacesClient.sharedClient();
 		
-		placeClient.currentPlaceWithCallback({
-			(placeLikelihoods, error) -> Void in
-			
-			guard error == nil else {
-				print("Current Place error: \(error!.localizedDescription)")
-				return
-			}
-			
-			if let placeLikelihoods = placeLikelihoods {
-				let place = placeLikelihoods.likelihoods[0].place
-				self.selectedPlace = place
-				
-				self.mapView.animateToLocation(CLLocationCoordinate2D(latitude: place.coordinate.latitude, longitude: place.coordinate.longitude))
-				
-				self.btnNavigate.enabled = true
-				
-			}
-			
-		})
+		// get current location
+		showMyLocation(self)
 		
 		//
 		resultsViewController = GMSAutocompleteResultsViewController()
@@ -687,6 +681,16 @@ extension ViewController: GMSAutocompleteResultsViewControllerDelegate {
 			
 			// Do something with the selected place.
 			self.selectedPlace = place
+			
+			// maker
+			marker?.map = nil
+			if let polylineDrawer = self.polylineDrawer {
+				polylineDrawer.clear()
+			}
+			let position = place.coordinate
+			self.marker = GMSMarker.init(position: position)
+			self.marker!.title = place.name
+			marker?.map = self.mapView
 			
 			self.btnNavigate.enabled = true
 			

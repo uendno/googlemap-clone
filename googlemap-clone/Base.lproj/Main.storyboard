@@ -48,6 +48,9 @@
                                             <constraint firstAttribute="width" constant="25" id="kBk-mf-kqA"/>
                                         </constraints>
                                         <state key="normal" image="navigate"/>
+                                        <connections>
+                                            <action selector="navigate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6ZH-rf-p7k"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Num of reviews" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7v8-3H-ANA">
                                         <rect key="frame" x="23" y="27" width="251" height="21"/>

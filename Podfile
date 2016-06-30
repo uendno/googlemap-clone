@@ -18,6 +18,7 @@ target 'googlemap-clone' do
   pod 'Kingfisher'
   pod 'FBLikeLayout'
   pod 'AlamofireImage'
+  pod 'Polyline'
 
 
   target 'googlemap-cloneTests' do
